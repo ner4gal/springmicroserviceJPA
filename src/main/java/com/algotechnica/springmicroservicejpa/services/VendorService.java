@@ -30,28 +30,33 @@ public class VendorService {
     }
 
     public Vendor updateVendorById(String vendorId, Vendor vendor) {
-        Vendor vn = null;
+        
         try {
             vendorDB.findById(vendorId).get();
-            vn =  vendorDB.save(vendor);
+            return vendorDB.save(vendor);
 
         } catch (Exception e) {
+            return null;
         }
-          return vn;
+          
     }
 
     public String deleteVendor(String vendorID) {
 
-        String message ;
+        
         try {
             vendorDB.deleteById(vendorID);
-            message = "Vendor deleted successfully";
+            return "Vendor deleted successfully";
             
         } catch (Exception e) {
-            message = "Vendor not found";
+            return  "Vendor not found";
         }
-        return message;
-        
-    
     }
+    public List<Vendor> getVendorByEmail(String email) {
+        return vendorDB.findByEmail(email);
+    }
+    public List<Vendor> getVendorByCompanyName(String companyName) {
+        return vendorDB.findByCompanyName(companyName);
+    }   
+    
 }
