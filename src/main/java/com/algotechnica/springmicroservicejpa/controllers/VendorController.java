@@ -23,7 +23,7 @@ public class VendorController {
                 @Autowired
                 private VendorService vendorService;
 
-                @RequestMapping("/vendors")
+                @RequestMapping(value="/vendors", method = RequestMethod.GET)
                 public List<Vendor> getAll() {
                                 return vendorService.getVendors();
                 }
