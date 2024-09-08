@@ -6,6 +6,6 @@ applications:
   buildpacks:
   - sap_java_buildpack
   services:
-  - capmMysql
+  - mysql
   env:
     VARIABLE_NAME: variable_value

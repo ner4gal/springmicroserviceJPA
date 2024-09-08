@@ -9,173 +9,159 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.olingo.odata2.api.annotation.edm.EdmEntitySet;
+import org.apache.olingo.odata2.api.annotation.edm.EdmEntityType;
+import org.apache.olingo.odata2.api.annotation.edm.EdmKey;
+import org.apache.olingo.odata2.api.annotation.edm.EdmNavigationProperty;
+import org.apache.olingo.odata2.api.annotation.edm.EdmNavigationProperty.Multiplicity;
+import org.apache.olingo.odata2.api.annotation.edm.EdmProperty;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("prototype")
 @Entity
-@Table(name = "vendors")
+@Table(name="vendor")
+@EdmEntitySet
+@EdmEntityType
 public class Vendor {
-    @SuppressWarnings("deprecation")
-    @Id
-    @Column(nullable = false, name = "ID")
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    private String code;
-    @Column(nullable = false, name = "COMPANY_NAME")
-    private String companyName;
-    @Column(nullable = false, name = "CONTACT_PERSON")
-    private String contactPerson;
-    @Column(nullable = false, name = "FIRST_NAME")
-    private String firstName;
-    @Column(nullable = false, name = "LAST_NAME")
-    private String lastName;
-    @Column(nullable = false, name = "EMAIL")
-    private String email;
-    @Column(nullable = false, name = "WEBSITE")
-    private String website;
-    @Column(nullable = false, name = "STATUS")
-    private Integer status;
-    @Column(nullable = false, name = "REG_DATE")
-    private Date regDate;
+	
+	@Id
+	@Column(nullable=false, name="id")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+	@EdmKey
+	@EdmProperty
+	private String code;
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getCompanyName() {
+		return companyName;
+	}
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	public String getContactPerson() {
+		return contactPerson;
+	}
+	public void setContactPerson(String contactPerson) {
+		this.contactPerson = contactPerson;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getWebsite() {
+		return website;
+	}
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Date getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
+	}
+	@Column(nullable=false, name="company_name")
+	@EdmProperty
+	private String companyName;
+	@Column(nullable=false, name="contact_person")
+	@EdmProperty
+	private String contactPerson;
+	@Column(nullable=false, name="first_name")
+	@EdmProperty
+	private String firstName;
+	@Column(nullable=true, name="last_name")
+	@EdmProperty
+	private String lastName;
+	@Column(nullable=true, name="website")
+	@EdmProperty
+	private String website;
+	@Column(nullable=true, name="email")
+	@EdmProperty
+	private String email;
+	@Column(nullable=false, name="status")
+	@EdmProperty
+	private String status;
+	@Column(nullable=true, name="reg_date")
+	@EdmProperty
+	private Date regDate;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="vendor_id", referencedColumnName="id")
+	@EdmNavigationProperty(toType=Address.class, toMultiplicity=Multiplicity.MANY)
+	private List<Address> addressess = new ArrayList<>();
+	
+	public List<Address> getAddressess() {
+		return addressess;
+	}
+	public void setAddressess(List<Address> addressess) {
+		this.addressess = addressess;
+	}
+		
+	public Vendor() {
+		super();
+//		this.code = "VEND1";
+//		this.companyName = "IBM Incorporation";
+//		this.contactPerson = "Simon Smith";
+//		this.firstName = "Laura";
+//		this.lastName = "Simpson";
+//		this.website = "www.ibm.co.us";
+//		this.email = "laura@ibm.com";
+//		this.status = "A";
+//		this.regDate = new Date();
+	}
+	
+	public Vendor(String code, String companyName, String contactPerson, String firstName, String lastName,
+			String website, String email, String status, Date regDate) {
+		super();
+		this.code = code;
+		this.companyName = companyName;
+		this.contactPerson = contactPerson;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.website = website;
+		this.email = email;
+		this.status = status;
+		this.regDate = regDate;
+	}
+	@Override
+	public String toString() {
+		return "Vendor [code=" + code + ", companyName=" + companyName + ", contactPerson=" + contactPerson
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", website=" + website + ", email=" + email
+				+ ", status=" + status + ", regDate=" + regDate + "]";
+	}
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "VENDOR_ID", referencedColumnName = "ID")
-    private List<Address> addresses = new ArrayList<Address>();
-
-    public Vendor() {
-        this.code = "code";
-        this.companyName = "companyName";
-        this.contactPerson = "contactPerson";
-        this.firstName = "firstName";
-        this.lastName = "lastName";
-        this.email = "email";
-        this.website = "website";
-        this.status = 0;
-        this.regDate = new Date();
-        this.addresses = new ArrayList<Address>();
-    }
-    public Vendor(String code, String companyName, String contactPerson, String firstName, String lastName,
-            String email, String website, Integer status, Date regDate, List<Address> addresses) {
-        this.code = code;
-        this.companyName = companyName;
-        this.contactPerson = contactPerson;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.website = website;
-        this.status = status;
-        this.regDate = regDate;
-        this.addresses = addresses;
-    }
-
-
-    public Vendor(String code, String companyName, String contactPerson, String firstName, String lastName) {
-        this.code = code;
-        this.companyName = companyName;
-        this.contactPerson = contactPerson;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = this.firstName + "." + this.lastName + "@" + this.companyName + "gmail.com";
-        this.website = "www." + this.companyName + ".com";
-        this.status = 0;
-        this.regDate = new Date();
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getContactPerson() {
-        return contactPerson;
-    }
-
-    public void setContactPerson(String contactPerson) {
-        this.contactPerson = contactPerson;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getRegDate() {
-        return regDate;
-    }
-
-    public void setRegDate(Date regDate) {
-        this.regDate = regDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Vendor [ Code : " + getCode() + ",  CompanyName : " + getCompanyName()
-                + ", getContactPerson : " + getContactPerson() + ", getFirstName :" + getFirstName()
-                + ", getLastName : " + getLastName() + ", getEmail : " + getEmail() + ", getWebsite :"
-                + getWebsite() + ", getStatus : " + getStatus() + ", getRegDate : " + getRegDate()
-                + ", getClass : " + getClass() + "]";
-    }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
+	
+	
 }
