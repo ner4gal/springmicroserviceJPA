@@ -34,19 +34,19 @@ public class DBConfig extends AbstractCloudConfig {
 	//
 	Logger cloudFoundryDataSourceConfigLogger = LoggerFactory.getLogger(this.getClass());
 
-	@Value("${vcap.services.mysql.credentials.username}")
+	@Value("${vcap.services.capmMysql.credentials.username}")
 	private String username;
 
-	@Value("${vcap.services.mysql.credentials.password}")
+	@Value("${vcap.services.capmMysql.credentials.password}")
 	private String password;
 
-	@Value("${vcap.services.mysql.credentials.hostname}")
+	@Value("${vcap.services.capmMysql.credentials.hostname}")
 	private String hostname;
 
-	@Value("${vcap.services.mysql.credentials.port}")
+	@Value("${vcap.services.capmMysql.credentials.port}")
 	private String port;
 
-	@Value("${vcap.services.mysql.credentials.dbname}")
+	@Value("${vcap.services.capmMysql.credentials.dbname}")
 	private String dbname;	
 
     @Bean
